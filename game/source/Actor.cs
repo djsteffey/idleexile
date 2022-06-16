@@ -10,6 +10,12 @@ namespace game
         protected Transformable m_transformable;
         protected RectangleShape m_shape;
 
+        // properties
+        public Vector2f Position
+        {
+            get { return this.m_transformable.Position; }
+        }
+
         // methods
         public Actor(Vector2f position, Vector2f size)
         {
@@ -29,9 +35,14 @@ namespace game
             this.m_shape.Size = size;
         }
 
-        public void ai(float delta, List<Actor> friendlyActorList, List<Actor> enemyActorList)
+        public void ai(float delta, Battlefield battlefield, List<Actor> actorList)
         {
-            
+            // get closest other actor
+            Actor other = Ai.getClosestOtherActor(this, actorList);
+
+            // move towards it
+            Vector2f direction = Utils.direction(this, other);
+            this.m_transformable.Position += direction * delta * 32;
         }
 
         public void update(float delta)
